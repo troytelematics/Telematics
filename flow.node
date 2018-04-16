@@ -1,0 +1,36 @@
+var output;
+var output1;
+var output2;
+var payM;
+flow.set(payM,0);
+var payT;
+flow.set(payT,0);
+var payH;
+flow.set(payH,0);
+
+var i_utime=msg.payload.utime;
+var i_macid=msg.payload.macid;
+
+arraySize=msg.payload.readings.length;
+for(var i=0;i<arraySize;i++){
+    switch(msg.payload.readings[i].type) {
+    case "T":
+        flow.set(payT,msg.payload.readings[i].value);
+        output +="INSERT INTO `readings`(macid,utime,type, value,uom) VALUES ('"+ i_macid+"',"+ i_utime+",'"+ msg.payload.readings[i].type+"',"+msg.payload.readings[i].value+",'"+msg.payload.readings[i].uom+"');";
+        break;
+    case "H":
+        flow.set(payH,msg.payload.readings[i].value);
+        output +="INSERT INTO `readings`(macid,utime,type, value,uom) VALUES ('"+ i_macid+"',"+ i_utime+",'"+ msg.payload.readings[i].type+"',"+msg.payload.readings[i].value+",'"+msg.payload.readings[i].uom+"');";
+        break;
+    case "M":
+        flow.set(payM,msg.payload.readings[i].value);
+        output +="INSERT INTO `readings`(macid,utime,type, value,uom) VALUES ('"+ i_macid+"',"+ i_utime+",'"+ msg.payload.readings[i].type+"',"+msg.payload.readings[i].value+",'"+msg.payload.readings[i].uom+"');";
+        break;
+    default:
+        break;
+    }
+}
+//output= "call insert_sensor('" +JSON.stringify(msg.payload) +"')";
+//output=output1+output2;
+msg.topic=output;
+return msg;
